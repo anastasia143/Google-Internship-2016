@@ -1,17 +1,50 @@
 #include <iostream>
 #include <string>
 
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
+#include <boost/lexical_cast.hpp>
+
 #include "server.h"
 #include "requestHandler.h"
 
+boost::function0<void> console_ctrl_function;
+
+BOOL WINAPI console_ctrl_handler(DWORD ctrl_type)
+{
+	switch (ctrl_type) {
+	case CTRL_C_EVENT:
+	case CTRL_BREAK_EVENT:
+	case CTRL_CLOSE_EVENT:
+	case CTRL_SHUTDOWN_EVENT:
+		console_ctrl_function();
+		return TRUE;
+	default:
+		return FALSE;
+	}
+}
+
 int main()
 {
-	/*std::string str;
-	RequestHandler handler(str);
-	std::string in = std::string("https://ru.wikipedia.org/wiki/%D0%9A%D0%BB%D0%B5%D1%82%D0%BE%D1%87%D0%BD%D1%8B%D0%B9_%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82");
-	std::string out;
-	bool res = handler.urlDecode(in, out);
-	std::cout << out;*/
+	try {
+		// Initialise server.
+		int threadsNum = 4;
+		boost::asio::ip::address addr = boost::asio::ip::address_v4::from_string("127.0.0.1");
+		short unsigned int port = 80;
+		const std::string docRoot = "C:/PROGRAMMING/Google-Internship-2016/root";
+		Server server(addr, port, docRoot, threadsNum);
 
+
+		// Set console control handler to allow server to be stopped.
+		console_ctrl_function = boost::bind(&Server::stop, &server);
+		SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
+
+		// Run the server until stopped.
+		server.run();
+	}
+	catch (std::exception& err) {
+		std::cerr << "exception: " << err.what() << "\n";
+	}
 	return 0;
 }

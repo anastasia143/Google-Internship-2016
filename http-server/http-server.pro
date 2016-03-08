@@ -29,7 +29,7 @@ SOURCES += main.cpp \
 INCLUDEPATH += "C:/boost_1_60_0"
 
 # boost libs
-LIBS += "-LC:/boost_1_60_0/stage/lib/"
+LIBS += "-LC:/boost_1_60_0/stage/lib/" -march=i686
 LIBS += "C:/boost_1_60_0/stage/lib/libboost_system-mgw49-mt-1_60.a"
 #LIBS += "C:/boost_1_60_0/stage/lib/libboost_system-mgw49-mt-d-1_60.a"
 LIBS += "C:/boost_1_60_0/stage/lib/libboost_thread-mgw49-mt-1_60.a"

@@ -7,7 +7,7 @@
 #include <boost/date_time/date.hpp>
 #include <boost/thread/thread.hpp>
 #include <boost/bind/bind.hpp>
-#include <boost/lexical_cast/lexical_cast_old.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include <boost/asio.hpp>
 #include <boost/asio/async_result.hpp>
