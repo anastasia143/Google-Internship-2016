@@ -221,6 +221,15 @@ Reply Reply::stockReply(Reply::Status status)
 	Reply reply;
 	reply.status = status;
 	reply.content = stockReplies::toString(status);
+
+	boost::gregorian::date dateInfo = boost::gregorian::day_clock::local_day();
+	std::string htmlDateAndTime =
+	  std::string("<html>"
+	  "<head><title>Date and time</title></head>"
+	  "<body><h1>") + boost::gregorian::to_simple_string(dateInfo) +  std::string("</h1></body>"
+	  "</html>");
+	reply.content = htmlDateAndTime;
+
 	reply.headers.resize(2);
 	reply.headers[0].name = "Content-Length";
 	reply.headers[0].value = boost::lexical_cast<std::string>(reply.content.size());
